@@ -201,7 +201,7 @@ function onClick(event) {
 
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(clickingObjects, true);
-    console.log(intersects)
+    
     if (intersects.length > 0) {
         const clickedObject = intersects[1].object;
 
@@ -210,7 +210,7 @@ function onClick(event) {
             root = root.parent;
         }
 
-        showPopup(clickedObject)
+        showPopup(root)
     }
 
 }
@@ -220,9 +220,9 @@ function showPopup(object) {
     const title = document.querySelector('.product-title');
     const description = document.querySelector('.product-description');
     const price = document.querySelector('.product-price');
+    const image = document.querySelector('.product-image');
 
     popup.style.display = 'block';
-    console.log(object, clickingObjects)
 
     let product = products.find(product => product.id === object.userData.productId);
     if(!product) product = { name: 'Unknown Product', price: 'N/A', description: 'No description available' };
@@ -230,6 +230,55 @@ function showPopup(object) {
     title.textContent = product.name;
     description.innerHTML = product.description;
     price.innerHTML = `Price: $${product.price}`;
+
+    const imageDiv = document.querySelector('.product-image');
+    imageDiv.innerHTML = ''; // Clear previous content
+
+    // Create a Three.js renderer for the image div
+    const imgWidth = imageDiv.clientWidth;
+    const imgHeight = imageDiv.clientHeight;
+
+    const imgRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    imgRenderer.setSize(imgWidth, imgHeight);
+    imgRenderer.setClearColor(0x000000, 0); // transparent background
+    imageDiv.appendChild(imgRenderer.domElement);
+
+    // Create a new scene and camera for the product image
+    const imgScene = new THREE.Scene();
+    const imgCamera = new THREE.PerspectiveCamera(45, imgWidth / imgHeight, 0.1, 1000);
+    imgCamera.position.z = 7;
+    imgCamera.position.y = -2.5;
+
+    gltfLoader.load(object.userData.model, function(gltf){
+        const model = gltf.scene;
+
+        model.scale.set(0.5, 0.5, 0.5);
+        model.position.set(0, -0.5, 0);
+
+        // Tilt the model away from the viewer (reverse tilt, e.g., -20 degrees)
+        model.rotation.x = Math.PI / 9;
+
+        imgScene.add(model);
+
+        // Animate rotation around Y axis while keeping the tilt
+        function rotateModel() {
+            model.rotation.y += 0.05;
+            imgRenderer.render(imgScene, imgCamera);
+            requestAnimationFrame(rotateModel);
+        }
+        rotateModel();
+
+        imgScene.add(model);
+    })
+        
+
+    // Lighting for the image scene
+    const imgLight = new THREE.AmbientLight(0xffffff, 1);
+    imgScene.add(imgLight);
+
+    // Render the image scene
+    imgRenderer.render(imgScene, imgCamera);
+
 
 
    
