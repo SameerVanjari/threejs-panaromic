@@ -1,30 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Three JS - Panaromic view</title>
 
-    <style>
-        body {
-            margin:0;
-            height: 100vh;
-            background: radial-gradient(rgb(5, 1, 236), rgb(8, 0, 119));
-        }
-        #container {
-            width: 100vw;
-            height: 100%; 
-        }
-
-    </style>
+    <link rel="stylesheet" href="/styles/index.css">
 </head>
+
 <body>
     <div id="container"></div>
-    <div id="popup" style="position: fixed; top: 20px; left: 20px; background: white; padding: 10px; border: 1px solid #ccc; display: none; z-index: 10;">
-  <span id="popup-content"></span>
-  <button onclick="document.getElementById('popup').style.display='none'">Close</button>
-</div>
+    <div id="popup" class="popup" style="display:none;">
+        <div id="popup-content">
+            <h2>Welcome to the Panoramic View</h2>
+            
+            <div class="product">
+                <div class="product-content">
+                    <h3 class="product-title"></h3>
+                    <p class="product-price"></p>
+                    <p class="product-description"></p>
+                </div>
+
+                <div class="product-image">
+
+                </div>
+            </div>
+
+           
+        </div>
+
+
+        <button class="popup_close-btn" onclick="document.getElementById('popup').style.display='none'">&#10006;</button>
+    </div>
 
     <script type="module" src="/main.js"></script>
 </body>
+
 </html>
