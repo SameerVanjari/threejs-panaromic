@@ -1,7 +1,7 @@
 export const hotspotPositions = [
     { x: 100, y: -55, z: 200, productId: 1, model: '/chair.glb' },
     { x: 100, y: -40, z: -200, productId: 2, model: '/table_lamp.glb' },
-    { x: 0, y: -1, z: 4, productId: 3, model: '/table.glb' },
+    { x: -120, y: -50, z: -25, productId: 3, model: '/table.glb' },
     // { x: -2, y: 2, z: -1, productId: 4 },
     // { x: 3, y: -0.5, z: 1, productId: 5 }
   ];
